@@ -28,7 +28,7 @@ user@pi:~$ nano ~/printer_data/config/moonraker.conf
 ```
 
 ```ini
-[update_manager Klipper-Adaptive-Meshing-Purging]
+[update_manager batteries-included-macros]
 type: git_repo
 channel: dev
 path: ~/batteries-included-macros

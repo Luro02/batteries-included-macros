@@ -19,19 +19,14 @@ class BatteriesIncludedMacros:
     cmd_TEST_BATTERIES_INCLUDED_help = ("A test macro to show that the script is working")
     def cmd_TEST_BATTERIES_INCLUDED(self, gcmd):
         gcmd.respond_info("Macro seems to be working")
-        values = []
         bed_mesh_section = self.config.getsection('bed_mesh')
-
-        probe_count = bed_mesh_section.getintlist('probe_count', (3, 3))
-        values.append([
-            f"probe_count = {probe_count}",
-        ])
-
         extruder_section = self.config.getsection("extruder")
-        values.append([
+
+        values = [
+            f"probe_count = {bed_mesh_section.getintlist('probe_count', (3, 3))}",
             f"nozzle_size = {extruder_section.getfloat('nozzle_diameter', 0.4)}",
             f"filament_diameter = {extruder_section.getfloat('filament_diameter', 1.75)}",
-        ])
+        ]
 
         gcmd.respond_info(f"For reference here are some config values: {', '.join(values)}")
 

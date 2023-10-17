@@ -80,7 +80,10 @@ is_installed=$(check_installation)
 # if it is not installed, create a link to the script and restart klipper
 if [ ${is_installed} -eq 0 ]; then
     link_extension
-    restart_klipper
 fi
+
+# always restart klipper, to load the updated code
+restart_klipper
+
 
 exit 0

@@ -4,17 +4,25 @@ import sys
 if sys.version_info.major != 3:
     raise EnvironmentError("python 3 is required for execution of %s" % sys.argv[0])
 
-# TODO:
-# Add missing config options to jinja environment:
-# https://github.com/Klipper3d/klipper/blob/master/klippy/extras/gcode_macro.py
-
 class BatteriesIncludedMacros:
     def __init__(self, config):
         self.printer = config.get_printer()
         self.config = config
+        # make extra data available to gcode macros:
+        self.printer.add_object("extra", self)
 
         self.gcode = self.printer.lookup_object('gcode')
         self.gcode.register_command('TEST_BATTERIES_INCLUDED', self.cmd_TEST_BATTERIES_INCLUDED, desc=self.cmd_TEST_BATTERIES_INCLUDED_help)
+
+    def get_status(self, eventtime):
+        bed_mesh_section = self.config.getsection('bed_mesh')
+        extruder_section = self.config.getsection("extruder")
+
+        return {
+            "probe_count": bed_mesh_section.getintlist('probe_count', (3, 3)),
+            "nozzle_diameter": str(extruder_section.getfloat('nozzle_diameter', 0.4)),
+            "filament_diameter": str(extruder_section.getfloat('filament_diameter', 1.75)),
+        }
 
     cmd_TEST_BATTERIES_INCLUDED_help = ("A test macro to show that the script is working")
     def cmd_TEST_BATTERIES_INCLUDED(self, gcmd):

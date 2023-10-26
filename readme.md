@@ -17,11 +17,6 @@ Clone the repository
 user@pi:~$ git clone https://github.com/Luro02/batteries-included-macros
 ```
 
-Create a link from your home directory into the printer config
-```console
-user@pi:~$ ln -s ~/batteries-included-macros/config ~/printer_data/config/batteries-included-macros
-```
-
 Then open the `~/printer_data/config/moonraker.conf` with an editor like `nano` and add the following code to the end of it:
 ```console
 user@pi:~$ nano ~/printer_data/config/moonraker.conf
@@ -79,3 +74,9 @@ retract_speed: 35
 ```
 
 Depending on your setup, some of those sections might be set in other included configs like `mainsail.cfg`.
+
+Then execute the `install.sh` script:
+```console
+user@pi:~$ cd ~/batteries-included-macros
+user@pi:~/batteries-included-macros$ ./install.sh
+```

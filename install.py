@@ -101,6 +101,11 @@ if __name__ == "__main__":
     shell = Shell()
     ensure_klipper_is_installed(shell)
 
+    # link macros to config folder (if not already done):
+    macro_config_path = shell.config_path().joinpath("batteries-included-macros")
+    if not macro_config_path.exists():
+        shell.config_path().joinpath("macros").symlink_to(macro_config_path)
+
     extensions = [e for e in shell.source_path().iterdir() if e.is_file()]
 
     # install missing extensions

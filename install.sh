@@ -38,12 +38,18 @@ fi
 # activate the python environment:
 source $KLIPPY_PYTHON_ENV_ACTIVATE
 
-if [[ $(pip list | grep -F pexpect) ]]; then
-    echo "found pexpect installation"
-else
-    echo "pexpect not installed, installing..."
-    pip install --require-virtualenv pexpect
-fi
+
+PYTHON_PKGS="pexpect"
+
+for p in $PYTHON_PKGS
+do
+    if [[ $(pip list | grep -F $p) ]]; then
+        echo "Python package '$p' already installed."
+    else
+        echo "Python package '$p' not installed, installing..."
+        pip install --require-virtualenv $p
+    fi
+done
 
 # execute installation script:
 python install.py

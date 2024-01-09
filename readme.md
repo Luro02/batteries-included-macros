@@ -71,6 +71,20 @@ retract_speed: 35
 #recover_velocity: 50.
 #   When capture/restore is enabled, the speed at which to return to
 #   the captured position (in mm/s). Default is 50.0 mm/s.
+
+# Overwrite idle_timeout, so when the printer is paused for filament change or filament runout,
+# only the extruder is powered down and not the heated bed (which would result in the print
+# coming loose from the bed)
+[idle_timeout]
+gcode:
+    {% if printer.pause_resume.is_paused %}
+        { action_respond_info("Idle Timeout: Extruder powered down") }
+        M104 S0   ; Set Hot-end to 0C (off)
+    {% else %}
+        { action_respond_info("Idle Timeout: Stepper and Heater powered down") }
+        TURN_OFF_HEATERS
+        M84
+    {% endif %}
 ```
 
 Depending on your setup, some of those sections might be set in other included configs like `mainsail.cfg`.

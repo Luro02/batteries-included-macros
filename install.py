@@ -81,7 +81,7 @@ def list_missing_extensions(shell: Shell, extensions: list[Path]) -> list[Path]:
 def install_extension(shell: Shell, extension: Path) -> None:
     # create a symbolic link from src/extension.py to klipper/klippy/extras/extension.py
     # so that updates in the repo automatically apply to klipper
-    extension.symlink_to(shell.klipper_extension_path().joinpath(extension.name))
+    shell.klipper_extension_path().joinpath(extension.name).symlink_to(extension)
 
 def remove_deleted_extensions(shell: Shell) -> None:
     # go through all extensions
@@ -102,9 +102,9 @@ if __name__ == "__main__":
     ensure_klipper_is_installed(shell)
 
     # link macros to config folder (if not already done):
-    macro_config_path = shell.config_path().joinpath("batteries-included-macros")
+    macro_config_path = shell.klipper_config_path().joinpath("batteries-included-macros")
     if not macro_config_path.exists():
-        shell.config_path().joinpath("macros").symlink_to(macro_config_path)
+        macro_config_path.symlink_to(shell.config_path().joinpath("macros"))
 
     extensions = [e for e in shell.source_path().iterdir() if e.is_file()]
 

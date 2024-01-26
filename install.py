@@ -45,7 +45,7 @@ class Shell:
 
         return self.sudo_password
 
-    def execute(self, command: list[str]):
+    def execute(self, command):
         args = []
         if len(command) > 1:
             args = command[1:]
@@ -68,9 +68,9 @@ def ensure_klipper_is_installed(shell: Shell):
         print("Klipper service not found, please install Klipper first")
         sys.exit(-1)
 
-def list_missing_extensions(shell: Shell, extensions: list[Path]) -> list[Path]:
+def list_missing_extensions(shell: Shell, extensions):
     extras_path: Path = shell.klipper_extension_path()
-    result: list[Path] = []
+    result = []
 
     for extension in extensions:
         if not extras_path.joinpath(extension.name).exists():
